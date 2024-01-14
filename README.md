@@ -7,7 +7,7 @@ This repository contains the L<sup><big>A</big></sup>T<sub><big>E</big></sub>X s
 If you cloned this repository directly from the PDF,
 
 ```
-$ git clone PDFGitPolyglot.pdf PDFGitPolyglot
+$ git clone CJ_May_Resume.pdf PDFGitPolyglot
 Cloning into 'PDFGitPolyglot'...
 Receiving objects: 100% (174/174), 103.48 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (100/100), done.
@@ -34,7 +34,7 @@ The first time you run `make`, the sources to [a patched version of Git](https:/
 
 The polyglot will fail to build if your document has any PDF objects (*e.g.*, images) that are larger than `0xFFFF` bytes. Read the article for more details.
 
-### License
+### License (PDFGitPolyGlot)
 
 Copyright © 2017 [Evan A. Sultanik](https://www.sultanik.com/)
 

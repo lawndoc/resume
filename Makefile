@@ -46,4 +46,4 @@ PDFGitPolyglot.pdf : article_injected.pdf article.pdf.block_offsets git/git upda
 	./update_deflate_headers.py $@.polyglot $@ article.pdf.block_offsets
 	rm $@.polyglot
 # Ignore any errors given by verify_xrefs, since it's not 100% accurate
-	./verify_xrefs.py $@ || true
+#	./verify_xrefs.py $@ || true
