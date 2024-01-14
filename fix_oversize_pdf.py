@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import re
 import sys
@@ -27,7 +27,7 @@ def parse_obj(pdf_content, logger = None):
             if not m2:
                 logger("Expected an endstream/endobj for \"%s\", but instead got \"%s\"" % (line, after_stream[:10]))
                 exit(1)
-            #print pdf_content[bytes_skipped + len(line) + 1 + bytes_up_to_endstream + len(m2.group(0)):][:50]
+            #print(pdf_content[bytes_skipped + len(line) + 1 + bytes_up_to_endstream + len(m2.group(0)):][:50])
             return bytes_skipped, len(line) + 1 + bytes_up_to_endstream + len(m2.group(0))
         m2 = re.match(".*?\n?endobj\s*\n", after_obj, re.MULTILINE | re.DOTALL)
         if m2:
@@ -145,7 +145,7 @@ def fix_pdf(pdf_content, output = None, logger = None):
         assert len(new_xref) == 20
         output.write(new_xref)
         pdf.pop(0)
-    #print "%d bytes added to the last block due to the xref fixes" % xref_len_diff
+    #print("%d bytes added to the last block due to the xref fixes" % xref_len_diff)
     block_offsets[-1][1] += xref_len_diff
     xrefoff = pdf.index("startxref\n")
     output.write("".join(pdf[:xrefoff+1]))

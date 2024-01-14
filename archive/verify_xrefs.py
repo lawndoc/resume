@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os
 import re
@@ -20,14 +20,14 @@ def find_pdf_end(pdf_bytes, start_offset = 0):
 
 def verify_xrefs(pdf_bytes):
     pdf_header_offset = find_pdf_start(pdf_bytes)
-    print "Found PDF header at offset %d" % pdf_header_offset
+    print(f"Found PDF header at offset {pdf_header_offset}")
     pdf_end_offset = find_pdf_end(pdf_bytes, start_offset = pdf_header_offset)
-    print "Found PDF trailer at offset %d" % pdf_end_offset
+    print(f"Found PDF trailer at offset {pdf_end_offset}")
     with tempfile.NamedTemporaryFile(suffix=".pdf") as tmp:
         tmp.write(pdf_bytes[pdf_header_offset:pdf_end_offset])
         tmp.flush()
         subprocess.check_call(["/usr/bin/env", "qpdf", "-qdf", tmp.name, '-'], stdout=FNULL)
-    print "PDF appears to be valid."
+    print("PDF appears to be valid.")
     return True
         
 if __name__ == "__main__":

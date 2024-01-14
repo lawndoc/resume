@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import fix_oversize_pdf
 import hashlib
@@ -96,39 +96,39 @@ def parse_pack_object(data):
 def fix_pack_sha1(pdf_content, pdf_header_offset, fix = False, pdf_size_delta = 0):
     pack_offset = pdf_content.rindex("PACK", 0, pdf_header_offset)
     version, num_objects = struct.unpack("!II", pdf_content[pack_offset + 4:pack_offset + 12])
-    print "Found git pack version %d containing %d objects" % (version, num_objects)
+    print(f"Found git pack version {version} containing {num_objects} objects")
     start_offset = pack_offset + 12
     offset = start_offset
     bytes_since_pdf = None
     pdf_length = None
     offset_delta = pdf_size_delta
     for i in range(num_objects):
-        #print "Offset: 0x%x" % offset
+        #print(f"Offset: 0x{offset}")
         obj = parse_pack_object(pdf_content[offset:])
-        #print "Parsed pack object at offset 0x%x of type %d with a %d byte header, %d byte body (decompressed), and %d byte body (compressed)" % (offset, obj_type, header_bytes, decompressed_length, compressed_length)
+        #print(f"Parsed pack object at offset 0x{offset} of type {obj_type} with a {header_bytes} byte header, {decompressed_length} byte body (decompressed), and {compressed_length} byte body (compressed)")
         if fix:
             if obj.obj_type == OBJ_OFS_DELTA:
                 raise Exception('We don\'t currently support fixing OBJ_OFS_DELTA objects! Try running `git pack-objects` with the delta-base-offset argument.')
             elif offset + obj.header_bytes + 2 == pdf_header_offset - 5:
                 # This is the object containing the PDF, so move it to the front, while we're at it.
-                print "The PDF is contained within pack object %d" % (i+1)
-                print "Moving the PDF object to the front of the pack..."
+                print(f"The PDF is contained within pack object {i+1}")
+                print("Moving the PDF object to the front of the pack...")
                 pdf_content = pdf_content[:start_offset] + pdf_content[offset:offset + obj.header_bytes + obj.compressed_length] + pdf_content[start_offset:offset] + pdf_content[offset + obj.header_bytes + obj.compressed_length:]
                 pdf_length = obj.header_bytes + obj.compressed_length
                 bytes_since_pdf = 0
             elif bytes_since_pdf is not None:
                 bytes_since_pdf += obj.header_bytes + obj.compressed_length
         offset += obj.header_bytes + obj.compressed_length
-    print "SHA1 should be at offset 0x%x" % offset
+    print(f"SHA1 should be at offset 0x{offset}")
     sha1 = hashlib.sha1(pdf_content[pack_offset:offset])
-    print sha1.hexdigest()
+    print(sha1.hexdigest())
     if sha1.digest() == pdf_content[offset:offset+20]:
-        print "SHA1 is valid!"
+        print("SHA1 is valid!")
         return pdf_content
     else:
-        print "SHA1 is not valid!"
+        print("SHA1 is not valid!")
         if fix:
-            print "Repairing the SHA1..."
+            print("Repairing the SHA1...")
             pdf_content = pdf_content[:offset] + sha1.digest() + pdf_content[offset+20:]
             # Validate that we've repaired it:
             return fix_pack_sha1(pdf_content, pdf_header_offset)
@@ -185,7 +185,7 @@ def update_deflate_headers(pdf_content, output, block_offsets):
     if not m:
         raise Exception("Could not find PDF header!")
     pdf_header_offset = len(m.group(1))
-    print "Found PDF header at offset %d" % pdf_header_offset
+    print(f"Found PDF header at offset {pdf_header_offset}")
     initial_repair = fix_pack_sha1(pdf_content, pdf_header_offset)
     assert initial_repair == pdf_content # Make sure the input has a valid SHA1
     content_before = zlib.decompress(pdf_content[pdf_header_offset - 7:])
@@ -195,32 +195,32 @@ def update_deflate_headers(pdf_content, output, block_offsets):
     for offset, last, length in find_deflate_headers(pdf_content[pdf_header_offset-5:]):
         if idx == 0:
             if last:
-                print "The entire PDF fits in a single DEFLATE block; nothing needed!"
+                print("The entire PDF fits in a single DEFLATE block; nothing needed!")
                 return
             idx += 1
             continue
         elif idx == 1:
-            print "Deleting the unwanted DEFLATE headers..."
+            print("Deleting the unwanted DEFLATE headers...")
             pdf_size_delta = 0
         header_offset = pdf_header_offset - 5 * idx + offset
         pdf_content = pdf_content[:header_offset] + pdf_content[header_offset + 5:]
-        print "Deleted DEFLATE header at offset 0x%x for a %d byte block" % (header_offset, length)
+        print(f"Deleted DEFLATE header at offset 0x{header_offset} for a {length} byte block")
         pdf_size_delta -= 5
         idx += 1
     
-    print "Updating the first DEFLATE header..."
+    print("Updating the first DEFLATE header...")
     pdf_content = pdf_content[:pdf_header_offset + block_offsets[0][0]] + make_deflate_header(False, block_offsets[0][1]) + pdf_content[pdf_header_offset:]
-    print "Updating the injected DEFLATE headers..."
+    print("Updating the injected DEFLATE headers...")
     for idx, block in enumerate(block_offsets[1:]):
         last = (idx == len(block_offsets) - 2)
         offset, length, added_bytes = block
-        print "Injecting DEFLATE header at offset 0x%x for a %d byte block" % (pdf_header_offset + offset, length)
+        print(f"Injecting DEFLATE header at offset 0x{pdf_header_offset + offset} for a {length} byte block")
         # Sanity check: the injection position should be preceeded by a PDF comment
         assert pdf_content[pdf_header_offset + offset - 3:pdf_header_offset + offset] == '%% '
         pdf_content = pdf_content[:pdf_header_offset + offset] + make_deflate_header(last, length) + pdf_content[pdf_header_offset + offset:]
         pdf_size_delta += 5
     content_after = zlib.decompress(pdf_content[pdf_header_offset - 7:])
-    print "Validating the resulting DEFLATE headers..."
+    print("Validating the resulting DEFLATE headers...")
     if content_before != content_after:
        raise Exception("Error: the updated DEFLATE output is corrupt!")
     sys.stdout.write("Updating the DEFLATE headers ")
