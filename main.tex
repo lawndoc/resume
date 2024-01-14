@@ -1,0 +1,180 @@
+\pdfminorversion=4
+
+% Page setup
+\documentclass{article}
+\pagestyle{empty}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=0.55in}
+
+% Set font
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Hyperlink formatting
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=[rgb]{0.2,0.5,1.0}
+}
+
+% List formatting
+\usepackage{enumitem}
+\usepackage{setspace}
+\setlist[itemize]{leftmargin=*, itemsep=0pt}
+
+% Create lightgray color for dates
+\usepackage{xcolor}
+\definecolor{lightgray}{gray}{0.6}
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                      {-3.5ex \@plus -1ex \@minus -.2ex}%
+                      {1ex \@plus.2ex}%
+                      {\normalfont\Large\bfseries}}
+\makeatother
+
+% Create thin blue lines for right-hand column
+\usepackage{tikz}
+\newcommand{\blueline}{\vspace{-3pt}\tikz{\draw[blue, thin, color={rgb,255:red,0; green,128; blue,255}] (0,0) -- (\linewidth,0);}\vspace{7pt}}
+
+% Add graphicx for icons -- usage: \includegraphics[height=1em]{icon.png}
+\usepackage{graphicx}
+
+%------------------------------DOCUMENT TITLE------------------------------
+\begin{document}
+
+\begin{flushleft}
+\bfseries\Huge C.J. May
+\end{flushleft}
+
+\vspace{3mm}
+%------------------------------BEGIN COLUMNS------------------------------
+\begin{minipage}[t]{0.60\textwidth} % Start of the wider left-hand column
+\section*{\includegraphics[height=0.7em]{icons/person-icon.png} Profile}
+\begin{spacing}{1.25}
+Passionate information security professional with deep expertise 
+in both enterprise and product security. Hands-on engineer with 
+broad proficiency encompassing many areas of IT and software 
+development.
+\end{spacing}
+\vspace{-0.75pt}
+
+\section*{\includegraphics[height=0.7em]{icons/briefcase-icon.png} Employment History}
+\textbf{Senior IT Security Analyst at Vermeer Corporation} \\
+\textcolor{lightgray}{May 2018 — Present}
+\begin{itemize}
+    \item Built and scaled Vermeer's DevSecOps program
+    \item Placed on IT architecture team with the most senior IT members
+    \item Automated git repo compliance using GitHub API
+    \item Remediated hundreds of leaked secrets and vulnerabilities
+    \item Built out CI/CD pipelines for many use cases including detection engineering, GitOps, and DevSecOps
+    \item Technical lead for SIEM strategy and SOC processes
+    \item Wrote over 100 detection rules both specific and broad in scope
+    \item Investigation and incident response lead
+    \item Pentested embedded PCs in Vermeer's industrial machinery
+    \item Automated many daily tasks with custom scripts and tools
+    \item Administered infrastructure on Linux and Windows systems
+\end{itemize}
+
+\textbf{Technical Content Writer at GitGuardian} \\
+\textcolor{lightgray}{October 2021 — Present}
+\begin{itemize}
+    \item Published technical writing and research focused on DevSecOps
+    \item Performed live demos in webinars with worldwide attendance
+    \item Content highly ranked in Google search results
+    \item Broke down complex and new concepts in an approachable way
+
+\end{itemize}
+
+\section*{\includegraphics[height=0.6em]{icons/gradcap-icon.png} Education}
+\textbf{Computer Science, University of Northern Iowa} \\
+\textcolor{lightgray}{August 2016 — May 2020}
+\begin{itemize}
+    \item Graduated with honors - 3.93 GPA
+    \item Decorated Division I athlete in Track \& Field
+\end{itemize}
+
+\section*{\includegraphics[height=0.7em]{icons/star-icon.png} Major Platform Experience}
+\textbf{Microsoft Defender XDR + Sentinel}
+\begin{itemize}
+    \item Threat hunting and detection engineering with KQL.
+    \item Managed security policies (ASR, AV, Firewall, Exploit Guard, etc.)
+\end{itemize}
+\textbf{Azure}
+\begin{itemize}
+    \item Identified and remediated dozens of critical/high vulnerabilities
+    \item Container application development
+    \item IAM governance
+\end{itemize}
+\end{minipage}
+%------------------------------COLUMN SPLIT------------------------------
+\hspace{10pt} % Spacing between columns
+\begin{minipage}[t]{0.30\textwidth} % Start of the narrower right-hand column
+
+\section*{Details}
+\begin{spacing}{1.25}
+United States \\
+319-939-0712 \\
+\href{mailto:contact@cjmay.info}{contact@cjmay.info}
+\end{spacing}
+\vspace{-0.75pt}
+
+\section*{Links}
+\begin{spacing}{1.25}
+\href{https://cjmay.info/works}{Talks and Publications} \\
+\href{https://github.com/lawndoc}{GitHub} \\
+\href{https://linkedin.com/in/cj-may}{LinkedIn} \\
+\href{https://twitter.com/lawndoc}{Twitter/X}
+\end{spacing}
+\vspace{-0.75pt}
+
+\section*{Languages/Platforms}
+\vspace{5pt}
+\begin{spacing}{0.5}
+Python \\
+\blueline \\
+C/C++ \\
+\blueline \\
+Bash \\
+\blueline \\
+Powershell \\
+\blueline \\
+Kusto (KQL) \\
+\blueline \\
+GraphQL \\
+\blueline \\
+SQL \\
+\blueline \\
+Docker \\
+\blueline \\
+Kubernetes \\
+\blueline \\
+Ansible \\
+\blueline \\
+Terraform
+\end{spacing}
+
+\section*{Vendor Experience}
+\vspace{5pt}
+\begin{spacing}{0.5}
+Wiz \\
+\blueline \\
+Snyk \\
+\blueline \\
+GitGuardian \\
+\blueline \\
+Cloudflare \\
+\blueline \\
+Dynatrace \\
+\blueline \\
+Checkpoint \\
+\blueline \\
+Proofpoint \\
+\blueline \\
+Elastic \\
+\end{spacing}
+
+\end{minipage}
+
+\end{document}

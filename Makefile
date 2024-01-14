@@ -30,7 +30,7 @@ git/git : | git/configure
 kolskaya.pdf : kolskaya.tex
 	pdflatex $<
 
-article.pdf : article.tex RazvodityeKrolikov_small.jpg kolskaya.pdf
+article.pdf : main.tex RazvodityeKrolikov_small.jpg kolskaya.pdf
 	pdflatex article
 	pdflatex article
 
