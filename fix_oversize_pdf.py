@@ -8,10 +8,10 @@ def parse_obj(pdf_content, logger = None):
         logger = lambda s : None
     bytes_skipped = 0
     for line in pdf_content.splitlines():
-        if line.startswith('%'):
+        if line.startswith(b'%'):
             bytes_skipped += len(line) + 1
             continue
-        m = re.match(r"^(\s*\d+\s+\d+\s+obj\s*)(<<|$)", line)
+        m = re.match(b"^(\s*\d+\s+\d+\s+obj\s*)(<<|$)", line)
         if not m:
             bytes_skipped += len(line) + 1            
             continue
@@ -19,17 +19,17 @@ def parse_obj(pdf_content, logger = None):
             after_obj = pdf_content[bytes_skipped+len(m.group(1)):]
         else:
             after_obj = pdf_content[bytes_skipped+len(line)+1:]
-        m = re.match(r"^\s*<<((?!\n\s*>>\s*\n).)*?\/Length\s+(\d+)\s*\n.*?>>.*?stream\n", after_obj, re.MULTILINE | re.DOTALL)
+        m = re.match(b"^\s*<<((?!\n\s*>>\s*\n).)*?\/Length\s+(\d+)\s*\n.*?>>.*?stream\n", after_obj, re.MULTILINE | re.DOTALL)
         if m:
             bytes_up_to_endstream = len(m.group(0)) + int(m.group(2))
             after_stream = after_obj[bytes_up_to_endstream:]
-            m2 = re.match(r".*?\n*endstream\s*\nendobj\s*\n", after_stream, re.MULTILINE | re.DOTALL)
+            m2 = re.match(b".*?\n*endstream\s*\nendobj\s*\n", after_stream, re.MULTILINE | re.DOTALL)
             if not m2:
                 logger("Expected an endstream/endobj for \"%s\", but instead got \"%s\"" % (line, after_stream[:10]))
                 exit(1)
             #print(pdf_content[bytes_skipped + len(line) + 1 + bytes_up_to_endstream + len(m2.group(0)):][:50])
             return bytes_skipped, len(line) + 1 + bytes_up_to_endstream + len(m2.group(0))
-        m2 = re.match(".*?\n?endobj\s*\n", after_obj, re.MULTILINE | re.DOTALL)
+        m2 = re.match(b".*?\n?endobj\s*\n", after_obj, re.MULTILINE | re.DOTALL)
         if m2:
             return bytes_skipped, len(m2.group(0))
         else:
@@ -46,10 +46,10 @@ def calculate_deflate_locations(objects, last_location = 0):
         else:
             next_location = objects[i+1][0]
         if next_location - last_location + 9 > 0xFFFF:
-            return [i] + map(lambda j : j+i+1, calculate_deflate_locations(objects[i+1:], last_location = obj[0]))
+            return [i] + list(map(lambda j : j+i+1, calculate_deflate_locations(objects[i+1:], last_location = obj[0])))
     return []
 
-PDF_HEADER = r"%PDF-1.\d\s*\n%\xD0\xD4\xC5\xD8\s*\n"
+PDF_HEADER = b"%PDF-1.\d\s*\n%\xD0\xD4\xC5\xD8\s*\n"
 
 def bytes_to_inject(length):
     """Calculates the number of bytes we need to inject after the DEFLATE header to make its length be valid within the PDF"""
@@ -97,7 +97,7 @@ def fix_pdf(pdf_content, output = None, logger = None):
     if not locations:
         logger("The PDF doesn't need fixing!\n")
         return block_offsets
-    original_block_offsets = [-5] + map(lambda i : objects[i][0], locations)
+    original_block_offsets = [-5] + list(map(lambda i : objects[i][0], locations))
     for idx, i in enumerate(locations):
         if idx >= len(locations) - 1:
             last = True
@@ -115,21 +115,21 @@ def fix_pdf(pdf_content, output = None, logger = None):
             block_offsets[0][1] = objects[i][0] + 3 # +3 for the leading '%% '
         block_offsets.append([objects[i][0] + 5*idx + 3, length, 9 + extra_bytes]) # 5*idx is to account for the previously added 5-byte DEFLATE block headers, +3 for the leading '%% '
         logger("Inserting %s DEFLATE header comment for a %d byte block with %d extra bytes before existing object #%d...\n" % (["a", "the last"][last], length - extra_bytes, extra_bytes, i+1))
-        new_obj = "%%%% %s\n" % (' ' * extra_bytes)
+        new_obj = f"%% {' '*extra_bytes}\n".encode()
         pdf_content = pdf_content[:objects[i][0]] + new_obj + pdf_content[objects[i][0]:]
         for j in range(i,len(objects)):
             objects[j] = (objects[j][0] + len(new_obj), objects[j][1])
     # Fix the xrefs:
     pdf = pdf_content.splitlines(True)
-    xrefoff = pdf.index("xref\n")
-    startxrefoff = pdf[xrefoff:].index("startxref\n")
-    nxref = int(pdf[xrefoff+1].split(" ")[1])
-    output.write("".join(pdf[:xrefoff+3]))
+    xrefoff = pdf.index(b"xref\n")
+    startxrefoff = pdf[xrefoff:].index(b"startxref\n")
+    nxref = int(pdf[xrefoff+1].split(b" ")[1])
+    output.write(b"".join(pdf[:xrefoff+3]))
     pdf = pdf[xrefoff+3:]
     xref_len_diff = 0
     for i in range(nxref-1):
         assert len(pdf[0]) == 20 # xref entries must be exactly 20 bytes long, including newlines
-        ref = pdf[0].split(" ")
+        ref = pdf[0].split(b" ")
         idx = int(ref[0])
         offset = 0
         block_idx = 1
@@ -140,18 +140,18 @@ def fix_pdf(pdf_content, output = None, logger = None):
         fixed_offset = "%010i" % (idx + offset)
         #assert pdf_content[start_offset + idx + offset/9*4:start_offset + idx + offset/9*4+20] == original_pdf[start_offset + idx:start_offset + idx + 20]
         xref_len_diff += len(fixed_offset) - len(ref[0])
-        ref[0] = fixed_offset
-        new_xref = " ".join(ref)
+        ref[0] = fixed_offset.encode()
+        new_xref = b" ".join(ref)
         assert len(new_xref) == 20
         output.write(new_xref)
         pdf.pop(0)
     #print("%d bytes added to the last block due to the xref fixes" % xref_len_diff)
     block_offsets[-1][1] += xref_len_diff
-    xrefoff = pdf.index("startxref\n")
-    output.write("".join(pdf[:xrefoff+1]))
-    output.write("%i\n" % (int(pdf[xrefoff+1]) + offset + xref_len_diff))
+    xrefoff = pdf.index(b"startxref\n")
+    output.write(b"".join(pdf[:xrefoff+1]))
+    output.write(b"%i\n" % (int(pdf[xrefoff+1]) + offset + xref_len_diff))
     pdf=pdf[xrefoff+2:]
-    output.write("".join(pdf))
+    output.write(b"".join(pdf))
     return block_offsets
 
 if __name__ == "__main__":

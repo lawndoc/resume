@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import fix_oversize_pdf
+from functools import reduce
 import hashlib
 import math
 import re
@@ -51,7 +52,7 @@ def encode_obj_ref(offset):
 
 class PackObject(object):
     def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             setattr(self, k, v)
 
 def parse_pack_object(data):
@@ -59,7 +60,7 @@ def parse_pack_object(data):
     length = 0
     header_bytes = 0
     kwargs = {}
-    for c in map(ord, data):
+    for c in data:
         if obj_type is None:
             # This is the first byte
             obj_type = (c >> 4) & 0b111
@@ -94,7 +95,7 @@ def parse_pack_object(data):
     return PackObject(**kwargs)
 
 def fix_pack_sha1(pdf_content, pdf_header_offset, fix = False, pdf_size_delta = 0):
-    pack_offset = pdf_content.rindex("PACK", 0, pdf_header_offset)
+    pack_offset = pdf_content.rindex(b"PACK", 0, pdf_header_offset)
     version, num_objects = struct.unpack("!II", pdf_content[pack_offset + 4:pack_offset + 12])
     print(f"Found git pack version {version} containing {num_objects} objects")
     start_offset = pack_offset + 12
@@ -135,23 +136,23 @@ def fix_pack_sha1(pdf_content, pdf_header_offset, fix = False, pdf_size_delta = 
         return None
     
 def read_deflate_header(header):
-    last = bool(0b1 & ord(header[0]))
-    length = (ord(header[2]) << 8) + ord(header[1])
-    nlength = (ord(header[4]) << 8) + ord(header[3])
+    last = bool(0b1 & header[0])
+    length = (header[2] << 8) + header[1]
+    nlength = (header[4] << 8) + header[3]
     if nlength ^ 0xFFFF != length:
         raise Exception("Corrupt DEFLATE header!")
     return last, length
 
 def make_deflate_header(last, length):
-    header = ["\0"] * 5
+    header = [0] * 5
     if last:
-        header[0] = "\x01"
-    header[1] = chr(length & 0xFF)
-    header[2] = chr((length & 0xFF00) >> 8)
+        header[0] = 0x01
+    header[1] = length & 0xFF
+    header[2] = (length & 0xFF00) >> 8
     nlength = length ^ 0xFFFF
-    header[3] = chr(nlength & 0xFF)
-    header[4] = chr((nlength & 0xFF00) >> 8)
-    header = "".join(header)
+    header[3] = nlength & 0xFF
+    header[4] = (nlength & 0xFF00) >> 8
+    header = b"".join(byte.to_bytes(1, byteorder = "big") for byte in header)
     # Sanity check:
     assert read_deflate_header(header) == (last, length)
     return header
@@ -181,7 +182,7 @@ def find_deflate_headers(data):
         offset += 5 + length
 
 def update_deflate_headers(pdf_content, output, block_offsets):
-    m = re.match(r"(.*?)" + fix_oversize_pdf.PDF_HEADER,pdf_content,re.MULTILINE | re.DOTALL)
+    m = re.match(b"(.*?)" + fix_oversize_pdf.PDF_HEADER,pdf_content,re.MULTILINE | re.DOTALL)
     if not m:
         raise Exception("Could not find PDF header!")
     pdf_header_offset = len(m.group(1))
@@ -216,14 +217,14 @@ def update_deflate_headers(pdf_content, output, block_offsets):
         offset, length, added_bytes = block
         print(f"Injecting DEFLATE header at offset 0x{pdf_header_offset + offset} for a {length} byte block")
         # Sanity check: the injection position should be preceeded by a PDF comment
-        assert pdf_content[pdf_header_offset + offset - 3:pdf_header_offset + offset] == '%% '
+        assert pdf_content[pdf_header_offset + offset - 3:pdf_header_offset + offset] == b'%% '
         pdf_content = pdf_content[:pdf_header_offset + offset] + make_deflate_header(last, length) + pdf_content[pdf_header_offset + offset:]
         pdf_size_delta += 5
     content_after = zlib.decompress(pdf_content[pdf_header_offset - 7:])
     print("Validating the resulting DEFLATE headers...")
     if content_before != content_after:
        raise Exception("Error: the updated DEFLATE output is corrupt!")
-    sys.stdout.write("Updating the DEFLATE headers ")
+    sys.stdout.write("Updated the DEFLATE headers")
     if pdf_size_delta == 0:
         sys.stdout.write("did not change the size of the PDF object\n")
     else:
@@ -234,8 +235,8 @@ def update_deflate_headers(pdf_content, output, block_offsets):
         sys.stdout.write(" the PDF object\n")
     sys.stdout.flush()
     pdf_content = fix_pack_sha1(pdf_content, pdf_header_offset, fix = True, pdf_size_delta = pdf_size_delta)
-    out.write(pdf_content)
-    out.flush()
+    output.write(pdf_content)
+    output.flush()
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
