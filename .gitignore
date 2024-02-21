@@ -3,6 +3,7 @@
 *.aux
 *.log
 *.pyc
+.DEFLATEDDummyHeader
 venv
 resume.pdf
 resume.pdf.block_offsets
