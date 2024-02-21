@@ -3,10 +3,11 @@
 *.aux
 *.log
 *.pyc
-article.pdf
-article.pdf.block_offsets
+venv
+resume.pdf
+resume.pdf.block_offsets
 PDFGitPolyglot.pdf
 PDFGitPolyglot.pdf.polyglot
-article_injected.pdf
+resume_injected.pdf
 kolskaya.pdf
 RazvodityeKrolikov_small.jpg

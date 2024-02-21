@@ -9,7 +9,7 @@ all : PDFGitPolyglot.pdf
 
 .PHONY : local-clean
 local-clean :
-	rm -f PDFGitPolyglot.pdf article.pdf article.log article.aux *~ RazvodityeKrolikov_small.jpg kolskaya.pdf
+	rm -f PDFGitPolyglot.pdf resume.pdf resume.log resume.aux *~
 
 .PHONY : clean
 clean : git-submodule local-clean
@@ -30,9 +30,9 @@ git/git : | git/configure
 kolskaya.pdf : kolskaya.tex
 	pdflatex $<
 
-article.pdf : main.tex RazvodityeKrolikov_small.jpg kolskaya.pdf
-	pdflatex article
-	pdflatex article
+resume.pdf : resume.tex
+	pdflatex resume
+	pdflatex resume
 
 %_small.jpg : %.jpg
 	convert $< -define jpeg:extent=63kb $@
@@ -40,10 +40,10 @@ article.pdf : main.tex RazvodityeKrolikov_small.jpg kolskaya.pdf
 %_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
 	python fix_oversize_pdf.py $*.pdf $*_injected.pdf
 
-PDFGitPolyglot.pdf : article_injected.pdf article.pdf.block_offsets git/git update_deflate_headers.py
-	./make_polyglot.sh article_injected.pdf $@
+PDFGitPolyglot.pdf : resume_injected.pdf resume.pdf.block_offsets git/git update_deflate_headers.py
+	./make_polyglot.sh resume_injected.pdf $@
 	mv $@ $@.polyglot
-	./update_deflate_headers.py $@.polyglot $@ article.pdf.block_offsets
+	./update_deflate_headers.py $@.polyglot $@ resume.pdf.block_offsets
 	rm $@.polyglot
 # Ignore any errors given by verify_xrefs, since it's not 100% accurate
 #	./verify_xrefs.py $@ || true
