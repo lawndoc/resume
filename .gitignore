@@ -2,6 +2,7 @@
 *~
 *.aux
 *.log
+*.out
 *.pyc
 .DEFLATEDDummyHeader
 venv
