@@ -1,0 +1,5 @@
+[Ubuntu]
+texlive-full
+clang
+autoconf
+liblocale-msgfmt-perl
