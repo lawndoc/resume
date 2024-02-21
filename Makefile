@@ -7,6 +7,13 @@ endif
 .PHONY : all
 all : PDFGitPolyglot.pdf
 
+release : PDFGitPolyglot.pdf
+	rm resume*[!.tex]
+	rm *.aux
+	rm *.log
+	rm *.out
+	rm -rf __pycache__
+
 .PHONY : local-clean
 local-clean :
 	rm -f PDFGitPolyglot.pdf resume.pdf resume.log resume.aux *~
@@ -38,7 +45,7 @@ resume.pdf : resume.tex
 	convert $< -define jpeg:extent=63kb $@
 
 %_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
-	python fix_oversize_pdf.py $*.pdf $*_injected.pdf
+	./fix_oversize_pdf.py $*.pdf $*_injected.pdf
 
 PDFGitPolyglot.pdf : resume_injected.pdf resume.pdf.block_offsets git/git update_deflate_headers.py
 	./make_polyglot.sh resume_injected.pdf $@
