@@ -31,16 +31,16 @@ jobs:
                 make release
                 mv PDFGitPolyglot.pdf CJ_May_Resume.pdf
 
-            - name: Get current date
-              id: date
-              run: echo "::set-output name=DATE::$(date +'%Y-%m-%d')"
+            - name: Set release tag
+              id: tag
+              run: echo "TAG=$(date +'%Y-%m-%d')_$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
             
             - name: Create release
               uses: ncipollo/release-action@v1
               with:
                 artifacts: "CJ_May_Resume.pdf"
                 token: ${{ secrets.GITHUB_TOKEN }}
-                tag: ${{ steps.date.outputs.DATE }}
+                tag: ${{ steps.tag.outputs.TAG }}
                 name: "CJ May Resume"
                 body: "Automatically generated PDF from resume.tex\n\nMy resume is a polyglot PDF that self-contains its own git repo!\n\nTo retrieve the source code from the PDF, just run `git clone CJ_May_Resume.pdf resume_source/`"
                 draft: false
