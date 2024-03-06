@@ -5,7 +5,8 @@ on:
     branches:
       - master
     paths:
-      - "resume.tex"
+      - "resume_devsecops.tex"
+      - "resume_death.tex"
       - "icons/**"
   workflow_dispatch:
 
