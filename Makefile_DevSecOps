@@ -1,0 +1,54 @@
+ifeq ($(shell uname), Darwin)
+CC=clang
+CXX=clang++
+AR=ar
+endif
+
+.PHONY : all
+all : release
+
+release : PDFGitPolyglot.pdf
+	rm resume_devsecops*[!.tex]
+	rm *.aux
+	rm *.log
+	rm *.out
+	rm -rf __pycache__
+	mv PDFGitPolyglot.pdf CJ_May_Resume_DevSecOps.pdf
+
+.PHONY : local-clean
+local-clean :
+	rm -f PDFGitPolyglot.pdf resume_devsecops.pdf resume_devsecops.log resume_devsecops.aux *~
+
+.PHONY : clean
+clean : git-submodule local-clean
+	$(MAKE) -C git clean
+
+.PHONY : git-submodule
+git-submodule :
+	git submodule init
+	git submodule update --recursive
+
+git/configure : | git-submodule
+	$(MAKE) -C git configure
+	cd git && ./configure
+
+git/git : | git/configure
+	$(MAKE) CC=$(CC) CXX=$(CXX) AR=$(AR) -C git
+
+resume_devsecops.pdf : resume_devsecops.tex
+	pdflatex resume_devsecops
+	pdflatex resume_devsecops
+
+%_small.jpg : %.jpg
+	convert $< -define jpeg:extent=63kb $@
+
+%_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
+	./fix_oversize_pdf.py $*.pdf $*_injected.pdf
+
+PDFGitPolyglot.pdf : resume_devsecops_injected.pdf resume_devsecops.pdf.block_offsets git/git update_deflate_headers.py
+	./make_polyglot.sh resume_devsecops_injected.pdf $@
+	mv $@ $@.polyglot
+	./update_deflate_headers.py $@.polyglot $@ resume_devsecops.pdf.block_offsets
+	rm $@.polyglot
+# Ignore any errors given by verify_xrefs, since it's not 100% accurate
+#	./verify_xrefs.py $@ || true

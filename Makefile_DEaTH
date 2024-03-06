@@ -5,18 +5,19 @@ AR=ar
 endif
 
 .PHONY : all
-all : PDFGitPolyglot.pdf
+all : release
 
 release : PDFGitPolyglot.pdf
-	rm resume*[!.tex]
+	rm resume_death*[!.tex]
 	rm *.aux
 	rm *.log
 	rm *.out
 	rm -rf __pycache__
+	mv PDFGitPolyglot.pdf CJ_May_Resume_DEaTH.pdf
 
 .PHONY : local-clean
 local-clean :
-	rm -f PDFGitPolyglot.pdf resume.pdf resume.log resume.aux *~
+	rm -f PDFGitPolyglot.pdf resume_death.pdf resume_death.log resume_death.aux *~
 
 .PHONY : clean
 clean : git-submodule local-clean
@@ -34,12 +35,9 @@ git/configure : | git-submodule
 git/git : | git/configure
 	$(MAKE) CC=$(CC) CXX=$(CXX) AR=$(AR) -C git
 
-kolskaya.pdf : kolskaya.tex
-	pdflatex $<
-
-resume.pdf : resume.tex
-	pdflatex resume
-	pdflatex resume
+resume_death.pdf : resume_death.tex
+	pdflatex resume_death
+	pdflatex resume_death
 
 %_small.jpg : %.jpg
 	convert $< -define jpeg:extent=63kb $@
@@ -47,10 +45,10 @@ resume.pdf : resume.tex
 %_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
 	./fix_oversize_pdf.py $*.pdf $*_injected.pdf
 
-PDFGitPolyglot.pdf : resume_injected.pdf resume.pdf.block_offsets git/git update_deflate_headers.py
-	./make_polyglot.sh resume_injected.pdf $@
+PDFGitPolyglot.pdf : resume_death_injected.pdf resume_death.pdf.block_offsets git/git update_deflate_headers.py
+	./make_polyglot.sh resume_death_injected.pdf $@
 	mv $@ $@.polyglot
-	./update_deflate_headers.py $@.polyglot $@ resume.pdf.block_offsets
+	./update_deflate_headers.py $@.polyglot $@ resume_death.pdf.block_offsets
 	rm $@.polyglot
 # Ignore any errors given by verify_xrefs, since it's not 100% accurate
 #	./verify_xrefs.py $@ || true

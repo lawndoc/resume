@@ -26,10 +26,10 @@ jobs:
                 git config --global user.name "GitHub Actions [bot]"
                 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: Build Polyglot PDF
+            - name: Build Polyglot PDFs
               run: |
-                make release
-                mv PDFGitPolyglot.pdf CJ_May_Resume.pdf
+                make -f Makefile_DevSecOps
+                make -f Makefile_DEaTH
 
             - name: Set release tag
               id: tag
@@ -38,10 +38,10 @@ jobs:
             - name: Create release
               uses: ncipollo/release-action@v1
               with:
-                artifacts: "CJ_May_Resume.pdf"
+                artifacts: "CJ_May_Resume_DevSecOps.pdf,CJ_May_Resume_DEaTH.pdf"
                 token: ${{ secrets.GITHUB_TOKEN }}
                 tag: ${{ steps.tag.outputs.TAG }}
                 name: "CJ May Resume"
-                body: "Automatically generated PDF from resume.tex\n\nMy resume is a polyglot PDF that self-contains its own git repo!\n\nTo retrieve the source code from the PDF, just run `git clone CJ_May_Resume.pdf resume_source/`"
+                body: "Automatically generated PDFs from LaTeX source\n\nI maintain a resume for both DevSecOps and DEaTH (Detection Engineering and Threat Hunting) due to my extensive experience in both cyber domains\n\nMy resume is a polyglot PDF that self-contains its own git repo!\n\nTo retrieve the source code from the PDF, just run `git clone CJ_May_Resume.pdf resume_source/`"
                 draft: false
                 prerelease: false
