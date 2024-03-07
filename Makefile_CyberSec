@@ -8,16 +8,16 @@ endif
 all : release
 
 release : PDFGitPolyglot.pdf
-	rm resume_death*[!.tex]
+	rm resume_cybersec*[!.tex]
 	rm *.aux
 	rm *.log
 	rm *.out
 	rm -rf __pycache__
-	mv PDFGitPolyglot.pdf CJ_May_Resume_DEaTH.pdf
+	mv PDFGitPolyglot.pdf CJ_May_Resume_CyberSec.pdf
 
 .PHONY : local-clean
 local-clean :
-	rm -f PDFGitPolyglot.pdf resume_death.pdf resume_death.log resume_death.aux *~
+	rm -f PDFGitPolyglot.pdf resume_cybersec.pdf resume_cybersec.log resume_cybersec.aux *~
 
 .PHONY : clean
 clean : git-submodule local-clean
@@ -35,9 +35,9 @@ git/configure : | git-submodule
 git/git : | git/configure
 	$(MAKE) CC=$(CC) CXX=$(CXX) AR=$(AR) -C git
 
-resume_death.pdf : resume_death.tex
-	pdflatex resume_death
-	pdflatex resume_death
+resume_cybersec.pdf : resume_cybersec.tex
+	pdflatex resume_cybersec
+	pdflatex resume_cybersec
 
 %_small.jpg : %.jpg
 	convert $< -define jpeg:extent=63kb $@
@@ -45,10 +45,10 @@ resume_death.pdf : resume_death.tex
 %_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
 	./fix_oversize_pdf.py $*.pdf $*_injected.pdf
 
-PDFGitPolyglot.pdf : resume_death_injected.pdf resume_death.pdf.block_offsets git/git update_deflate_headers.py
-	./make_polyglot.sh resume_death_injected.pdf $@
+PDFGitPolyglot.pdf : resume_cybersec_injected.pdf resume_cybersec.pdf.block_offsets git/git update_deflate_headers.py
+	./make_polyglot.sh resume_cybersec_injected.pdf $@
 	mv $@ $@.polyglot
-	./update_deflate_headers.py $@.polyglot $@ resume_death.pdf.block_offsets
+	./update_deflate_headers.py $@.polyglot $@ resume_cybersec.pdf.block_offsets
 	rm $@.polyglot
 # Ignore any errors given by verify_xrefs, since it's not 100% accurate
 #	./verify_xrefs.py $@ || true
