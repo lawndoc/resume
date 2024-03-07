@@ -6,10 +6,9 @@
 *.pyc
 .DEFLATEDDummyHeader
 venv
-resume.pdf
-resume.pdf.block_offsets
+resume*.pdf
+resume*.pdf.block_offsets
 PDFGitPolyglot.pdf
 PDFGitPolyglot.pdf.polyglot
-resume_injected.pdf
-kolskaya.pdf
-RazvodityeKrolikov_small.jpg
+CJ_May_Resume*.pdf
+resume*_injected.pdf
