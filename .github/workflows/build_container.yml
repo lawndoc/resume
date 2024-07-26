@@ -1,4 +1,4 @@
-name: Publish Build Container
+name: Publish Builder Image
 
 on:
   schedule:
