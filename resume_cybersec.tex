@@ -1,3 +1,4 @@
+%------------------------------PREAMBLE------------------------------
 \pdfminorversion=4
 
 % Page setup
@@ -58,30 +59,16 @@
 %------------------------------BEGIN COLUMNS------------------------------
 \begin{minipage}[t]{0.60\textwidth} % Start of the wider left-hand column
 \section*{\includegraphics[height=0.7em]{icons/person-icon.png} Profile}
-\begin{spacing}{1.25}
-C.J. is a passionate information security professional whose years of experience
-don't accurately portray his deep expertise in both enterprise and product
-security. He is a hands-on engineer with a knack for learning new things and
-following through on ambitious projects.
-\end{spacing}
-\vspace{-0.75pt}
+\subfile{subfiles/introduction}
 
 \section*{\includegraphics[height=0.7em]{icons/briefcase-icon.png} Employment History}
 \textbf{Senior IT Security Analyst at Vermeer Corporation} \\
 \textcolor{lightgray}{May 2018 — Present}
-\subfile{experience/vermeer/corpsec}
+\subfile{subfiles/experience/vermeer/corpsec}
 
 \textbf{Technical Content Writer at GitGuardian} \\
 \textcolor{lightgray}{October 2021 — Present}
-\begin{itemize}
-    \item Published a 34-page whitepaper on DevSecOps architecture
-    \item Wrote many technical blogs with research focused on Application Security
-    \item Performed live demos in webinars with worldwide attendance
-    \item Featured in popular newsletters like TLDR
-    \item Content highly ranked in Google search results
-    \item Broke down complex and new concepts in an approachable way
-
-\end{itemize}
+\subfile{subfiles/experience/gitguardian/content_writer}
 
 \section*{\includegraphics[height=0.6em]{icons/gradcap-icon.png} Education}
 \textbf{Computer Science, University of Northern Iowa} \\

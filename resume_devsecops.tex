@@ -1,3 +1,4 @@
+%------------------------------PREAMBLE------------------------------
 \pdfminorversion=4
 
 % Page setup
@@ -44,6 +45,9 @@
 % Add xspace package for better spacing after macros
 \usepackage{xspace}
 
+% Multi-document
+\usepackage{subfiles}
+
 %------------------------------DOCUMENT TITLE------------------------------
 \begin{document}
 
@@ -55,40 +59,16 @@
 %------------------------------BEGIN COLUMNS------------------------------
 \begin{minipage}[t]{0.60\textwidth} % Start of the wider left-hand column
 \section*{\includegraphics[height=0.7em]{icons/person-icon.png} Profile}
-\begin{spacing}{1.25}
-Passionate information security professional with deep expertise 
-in both enterprise and product security. Hands-on engineer with 
-broad proficiency encompassing many areas of IT and software 
-development.
-\end{spacing}
-\vspace{-0.75pt}
+\subfile{subfiles/introduction}
 
 \section*{\includegraphics[height=0.7em]{icons/briefcase-icon.png} Employment History}
 \textbf{Senior IT Security Analyst at Vermeer Corporation} \\
 \textcolor{lightgray}{May 2018 — Present}
-\begin{itemize}
-    \item Built and scaled Vermeer's DevSecOps program
-    \item Drove adoption of SAST, SCA, Secret Scanning, and other tools in the SDLC
-    \item Pentested APIs, web applications, mobile apps, and embedded systems
-    \item Performed threat modeling for new products and features
-    \item Consulted for IT architecture and design reviews
-    \item Automated git repo compliance using GitHub API
-    \item Remediated hundreds of leaked secrets and vulnerabilities
-    \item Built out CI/CD pipelines for detection engineering, GitOps, and DevSecOps
-    \item Wrote many automations with custom scripts and tools
-    \item Administered infrastructure on Linux and Windows systems
-    \item Investigation and incident response lead
-\end{itemize}
+\subfile{experience/vermeer/appsec}
 
 \textbf{Technical Content Writer at GitGuardian} \\
 \textcolor{lightgray}{October 2021 — Present}
-\begin{itemize}
-    \item Published technical writing and research focused on DevSecOps
-    \item Performed live demos in webinars with worldwide attendance
-    \item Content highly ranked in Google search results
-    \item Broke down complex and new concepts in an approachable way
-
-\end{itemize}
+\subfile{experience/gitguardian/content_writer}
 
 \section*{\includegraphics[height=0.6em]{icons/gradcap-icon.png} Education}
 \textbf{Computer Science, University of Northern Iowa} \\
