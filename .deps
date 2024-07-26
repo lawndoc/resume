@@ -1,5 +1,5 @@
-[Ubuntu]
-texlive-full
-clang
 autoconf
+clang
+gettext
 liblocale-msgfmt-perl
+texlive-full
