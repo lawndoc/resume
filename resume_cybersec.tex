@@ -44,6 +44,9 @@
 % Add xspace package for better spacing after macros
 \usepackage{xspace}
 
+% Multi-document
+\usepackage{subfiles}
+
 %------------------------------DOCUMENT TITLE------------------------------
 \begin{document}
 
@@ -56,36 +59,25 @@
 \begin{minipage}[t]{0.60\textwidth} % Start of the wider left-hand column
 \section*{\includegraphics[height=0.7em]{icons/person-icon.png} Profile}
 \begin{spacing}{1.25}
-Passionate information security professional with deep expertise 
-in both enterprise and product security. Hands-on engineer with 
-broad proficiency encompassing many areas of IT and software 
-development.
+C.J. is a passionate information security professional whose years of experience
+don't accurately portray his deep expertise in both enterprise and product
+security. He is a hands-on engineer with a knack for learning new things and
+following through on ambitious projects.
 \end{spacing}
 \vspace{-0.75pt}
 
 \section*{\includegraphics[height=0.7em]{icons/briefcase-icon.png} Employment History}
 \textbf{Senior IT Security Analyst at Vermeer Corporation} \\
 \textcolor{lightgray}{May 2018 — Present}
-\begin{itemize}
-    \item Technical lead for SIEM strategy and SOC processes
-    \item Investigation and incident response lead
-    \item Multiple instances of stopping ransomware threat actors after gaining a foothold
-    \item Wrote over 100 detection rules both specific and broad in scope
-    \item Built out detection lab environment
-    \item Pentested APIs, web applications, mobile apps, and embedded systems
-    \item Worked with Security Engineering and other in IT to reduce attack surface
-    \item Created CI/CD pipelines for many use cases including detection engineering
-    \item Automated many daily tasks with custom scripts and tools
-    \item Administered infrastructure on Linux and Windows systems
-    \item Consulted for IT architecture and design reviews
-    \item Built and scaled Vermeer's DevSecOps program
-\end{itemize}
+\subfile{experience/vermeer/corpsec}
 
 \textbf{Technical Content Writer at GitGuardian} \\
 \textcolor{lightgray}{October 2021 — Present}
 \begin{itemize}
-    \item Published technical writing and research focused on DevSecOps
+    \item Published a 34-page whitepaper on DevSecOps architecture
+    \item Wrote many technical blogs with research focused on Application Security
     \item Performed live demos in webinars with worldwide attendance
+    \item Featured in popular newsletters like TLDR
     \item Content highly ranked in Google search results
     \item Broke down complex and new concepts in an approachable way
 
@@ -166,6 +158,10 @@ Terraform
 \section*{Vendor Experience}
 \vspace{5pt}
 \begin{spacing}{0.5}
+Defender XDR \\
+\blueline \\
+Microsoft Sentinel \\
+\blueline \\
 Wiz \\
 \blueline \\
 Snyk \\
@@ -174,13 +170,9 @@ GitGuardian \\
 \blueline \\
 Cloudflare \\
 \blueline \\
-Dynatrace \\
-\blueline \\
 Checkpoint \\
 \blueline \\
 Proofpoint \\
-\blueline \\
-Elastic \\
 \vspace{20pt}
 \end{spacing}
 
