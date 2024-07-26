@@ -1,5 +1,8 @@
 autoconf
 clang
 gettext
+git
 liblocale-msgfmt-perl
+make
+python3
 texlive-full
