@@ -14,7 +14,7 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-        container: ghcr.io/lawndoc/gitpdf:latest
+        container: ghcr.io/lawndoc/gitpdf:master
         steps:
             - name: Checkout
               uses: actions/checkout@v4
