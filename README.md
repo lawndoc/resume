@@ -2,7 +2,9 @@
 
 This repository contains the L<sup><big>A</big></sup>T<sub><big>E</big></sub>X source of my resume PDF, as well as all of the scripts necessary to rebuild the [polyglot](https://en.wikipedia.org/wiki/Polyglot_(computing)).
 
-### Building the Polyglot
+For details on how this works, read the [original article from PoC||GTFO](https://www.sultanik.com/pocorgtfo/pocorgtfo15.pdf#page=60).
+
+### Building the Polyglot Yourself
 
 If you cloned this repository directly from the PDF,
 
@@ -20,28 +22,22 @@ git checkout master && git branch -d PolyglotBranch
 After that, or if you cloned the repo from elsewhere (*e.g.*, [GitHub](https://github.com/lawndoc/resume)), then you will build the PDF again with the following command:
 
 ```
-docker run -it -v ./release:/build/release ghcr.io/lawndoc/gitpdf:master scripts/release.sh
+docker run -it -v ./release:/build/release ghcr.io/lawndoc/gitpdf:master ./build_all.sh
 ```
 
-This will automatically build `PDFGitPolyglot.pdf`.
-
-The first time you run `make`, the sources to [a patched version of Git](https://github.com/ESultanik/git/tree/UncompressedPack) will be downloaded and compiled. This can be time consuming, so I suggest you use `make -j8`, or whatever is appropriate for your system.
+This will automatically build my resumes and put them in the `release` folder.
 
 ### Dependencies
 
-* a relatively full install of a T<sub><big>E</big></sub>X distro, such as [TeX Live](https://www.tug.org/texlive/)
-* autoconf and a C99 compiler for compiling git; I've found that git likes clang more than gcc
-* all of git's sourcecode dependencies (openssl, curl, gettext, *&c.*)
-* Python 2.7
-* bash
-* ImageMagick
-* qpdf, used by the `verify_xrefs.py` script for sanity checking; this dependency can be removed by commenting out the call to `verify_xrefs.py` in the `Makefile`
+The container image `ghcr.io/lawndoc/gitpdf` contains all the dependencies you need to build the PDF. See the [`.deps`](./.deps) file to see the packages that are installed on top of the Ubuntu base image.
 
 ### Caveats
 
-The polyglot will fail to build if your document has any PDF objects (*e.g.*, images) that are larger than `0xFFFF` bytes. Read the article for more details.
+The polyglot will fail to build if your document has any PDF objects (*e.g.*, images) that are larger than `0xFFFF` bytes. Read [the original article](https://www.sultanik.com/pocorgtfo/pocorgtfo15.pdf#page=60) for more details.
 
 ### License (PDFGitPolyGlot)
+
+Copyright © 2024 [C.J. May](https://cjmay.info)
 
 Copyright © 2017 [Evan A. Sultanik](https://www.sultanik.com/)
 
