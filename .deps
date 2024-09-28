@@ -6,3 +6,4 @@ liblocale-msgfmt-perl
 make
 python3
 texlive-full
+zlib1g-dev
