@@ -14,7 +14,7 @@ release : PDFGitPolyglot.pdf
 	rm *.out
 	rm -rf __pycache__
 	mkdir -p release
-	mv PDFGitPolyglot.pdf /release/CJ_May_Resume_CyberSec.pdf
+	mv PDFGitPolyglot.pdf release/CJ_May_Resume_CyberSec.pdf
 
 .PHONY : local-clean
 local-clean :

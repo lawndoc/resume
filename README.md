@@ -22,7 +22,7 @@ git checkout master && git branch -d PolyglotBranch
 After that, or if you cloned the repo from elsewhere (*e.g.*, [GitHub](https://github.com/lawndoc/resume)), then you can build the PDF from the git repo directory with the following command:
 
 ```
-docker run -it -v .:/build ghcr.io/lawndoc/gitpdf:master echo "DevSecOps;CyberSec" | xargs -L1 -d ";" make -f
+docker run -it -v .:/build ghcr.io/lawndoc/gitpdf:master echo -n "DevSecOps;CyberSec" | xargs -L1 -d ";" -I {} make -f Makefile_{}
 ```
 
 This will automatically build my resumes and put them in the `release` folder.
