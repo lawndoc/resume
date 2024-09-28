@@ -13,7 +13,8 @@ release : PDFGitPolyglot.pdf
 	rm *.log
 	rm *.out
 	rm -rf __pycache__
-	mv PDFGitPolyglot.pdf CJ_May_Resume_DevSecOps.pdf
+	mkdir -p release
+	mv PDFGitPolyglot.pdf release/CJ_May_Resume_DevSecOps.pdf
 
 .PHONY : local-clean
 local-clean :
@@ -43,12 +44,10 @@ resume_devsecops.pdf : resume_devsecops.tex
 	convert $< -define jpeg:extent=63kb $@
 
 %_injected.pdf %.pdf.block_offsets : %.pdf fix_oversize_pdf.py
-	./fix_oversize_pdf.py $*.pdf $*_injected.pdf
+	./scripts/fix_oversize_pdf.py $*.pdf $*_injected.pdf
 
 PDFGitPolyglot.pdf : resume_devsecops_injected.pdf resume_devsecops.pdf.block_offsets git/git update_deflate_headers.py
-	./make_polyglot.sh resume_devsecops_injected.pdf $@
+	./scripts/make_polyglot.sh resume_devsecops_injected.pdf $@
 	mv $@ $@.polyglot
-	./update_deflate_headers.py $@.polyglot $@ resume_devsecops.pdf.block_offsets
+	./scripts/update_deflate_headers.py $@.polyglot $@ resume_devsecops.pdf.block_offsets
 	rm $@.polyglot
-# Ignore any errors given by verify_xrefs, since it's not 100% accurate
-#	./verify_xrefs.py $@ || true

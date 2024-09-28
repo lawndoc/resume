@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - "resume_devsecops.tex"
-      - "resume_cybersec.tex"
-      - "experience/**"
-      - "icons/**"
-      - "subfiles/**"
+    paths-ignore:
+      - ".deps"
+      - "archive/**"
+      - "README.md"
   workflow_dispatch:
 
 jobs:
@@ -20,16 +18,10 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Set git config
-              run: |
-                git config --global user.name "GitHub Actions [bot]"
-                git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                git config --global --add safe.directory '*'
-
             - name: Build Polyglot PDFs
-              run: |
-                make -f Makefile_DevSecOps
-                make -f Makefile_CyberSec
+              env:
+                GITHUB_ACTION: true
+              run: ./build_all.sh
 
             - name: Set release tag
               id: tag

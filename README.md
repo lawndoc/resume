@@ -1,22 +1,29 @@
 # This Git Repository is a PDF
 
-This repository contains the L<sup><big>A</big></sup>T<sub><big>E</big></sub>X source of the PDF, as well as all of the scripts necessary to rebuild the [polyglot](https://en.wikipedia.org/wiki/Polyglot_(computing)).
+This repository contains the L<sup><big>A</big></sup>T<sub><big>E</big></sub>X source of my resume PDF, as well as all of the scripts necessary to rebuild the [polyglot](https://en.wikipedia.org/wiki/Polyglot_(computing)).
 
 ### Building the Polyglot
 
 If you cloned this repository directly from the PDF,
 
 ```
-$ git clone CJ_May_Resume.pdf PDFGitPolyglot
-Cloning into 'PDFGitPolyglot'...
+$ git clone CJ_May_Resume.pdf source/
+Cloning into 'source'...
 Receiving objects: 100% (174/174), 103.48 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (100/100), done.
 ```
-then you will need to do some cleanup before running `make`:
+then you will need to do some cleanup first:
 ```
+cd source
 git checkout master && git branch -d PolyglotBranch
 ```
-After that, or if you cloned the repo from elsewhere (*e.g.*, [GitHub](https://github.com/ESultanik/PDFGitPolyglot)), then you will be able to run `make`, which will automatically build `PDFGitPolyglot.pdf` from the document contained in `article.tex`.
+After that, or if you cloned the repo from elsewhere (*e.g.*, [GitHub](https://github.com/lawndoc/resume)), then you will build the PDF again with the following command:
+
+```
+docker run -it -v ./release:/build/release ghcr.io/lawndoc/gitpdf:master scripts/release.sh
+```
+
+This will automatically build `PDFGitPolyglot.pdf`.
 
 The first time you run `make`, the sources to [a patched version of Git](https://github.com/ESultanik/git/tree/UncompressedPack) will be downloaded and compiled. This can be time consuming, so I suggest you use `make -j8`, or whatever is appropriate for your system.
 
