@@ -20,9 +20,9 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Build Polyglot PDFs
-              env:
-                GITHUB_ACTION: true
-              run: ./build_all.sh
+              run: |
+                make -f Makefile_DevSecOps
+                make -f Makefile_CyberSec
 
             - name: Set release tag
               id: tag
@@ -31,7 +31,7 @@ jobs:
             - name: Create release
               uses: ncipollo/release-action@v1
               with:
-                artifacts: "CJ_May_Resume_DevSecOps.pdf,CJ_May_Resume_CyberSec.pdf"
+                artifacts: "/release/CJ_May_Resume_DevSecOps.pdf,/release/CJ_May_Resume_CyberSec.pdf"
                 token: ${{ secrets.GITHUB_TOKEN }}
                 tag: ${{ steps.tag.outputs.TAG }}
                 name: "CJ May Resume"
