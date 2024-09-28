@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - ".deps"
       - "archive/**"
+      - "Dockerfile"
       - "README.md"
   workflow_dispatch:
 

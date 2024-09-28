@@ -1,6 +1,12 @@
 name: Publish Builder Image
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - ".deps"
+      - "Dockerfile"
   schedule:
     - cron: "0 0 1 * *"
   workflow_dispatch:
