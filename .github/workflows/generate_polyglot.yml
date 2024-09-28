@@ -9,6 +9,7 @@ on:
       - "resume_cybersec.tex"
       - "experience/**"
       - "icons/**"
+      - "subfiles/**"
   workflow_dispatch:
 
 jobs:
