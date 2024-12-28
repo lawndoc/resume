@@ -1,0 +1,118 @@
+%%%%
+% MTecknology's Resume
+%%%%
+% Author: Michael Lustfield
+% License: CC-BY-4
+% - https://creativecommons.org/licenses/by/4.0/legalcode.txt
+%%%%
+
+\documentclass[letterpaper,10pt]{article}
+\usepackage{resumeconfig}
+
+% Multi-document
+\usepackage{subfiles}
+
+
+%==============%
+% Begin Resume %
+%==============%
+
+%\numberedPages % NOTE: lastpage requires a second build
+%\documentFooter{\thepage of 2} % Does similar without using lastpage
+\begin{document}
+
+  %---------%
+  % Heading %
+  %---------%
+
+  \documentTitle{C.J. May}{
+    % Web Version
+    %\raisebox{-0.05\height} \faPhone\ [redacted - web copy] ~
+    %\raisebox{-0.15\height} \faEnvelope\ [redacted - web copy] ~
+    %%
+    \href{tel:3199390712}{
+      \raisebox{-0.05\height} \faPhone\ 319-939-0712} ~ | ~
+    \href{mailto:contact@cjmay.info}{
+      \raisebox{-0.15\height} \faEnvelope\ contact@cjmay.info} ~ | ~
+    \href{https://linkedin.com/in/cj-may/}{
+      \raisebox{-0.15\height} \faLinkedin\ linkedin.com/in/cj-may} ~ | ~
+    \href{https://github.com/lawndoc}{
+      \raisebox{-0.15\height} \faGithub\ github.com/lawndoc}
+  }
+
+  %---------%
+  % Summary %
+  %---------%
+
+  \tinysection{Summary}
+  \subfile{subfiles/{{ summary_path | default("default_summary", true) }}}
+
+  %--------%
+  % Skills %
+  %--------%
+
+  \section{Skills}
+
+  \begin{multicols}{2}
+    \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=75pt]
+      \subfile{subfiles/{{ skills_path | default("default_skills", true) }}}
+    \end{itemize}
+  \end{multicols}
+
+  %------------%
+  % Experience %
+  %------------%
+
+  \section{Experience}
+
+  \headingBf{Vermeer Corporation}{May 2018 -- Present}
+  \headingIt{Senior IT Security Analyst}{}
+  \begin{resume_list}
+    \subfile{subfiles/{{ vermeer_path | default("experience/vermeer/default_appsec", true) }}}
+  \end{resume_list}
+
+  \headingBf{Freelance Work}{Oct 2021 -- Present}
+  \headingIt{Technical Content Writing}{}
+  \begin{resume_list}
+    \subfile{subfiles/experience/content_writer/gitguardian}
+    \subfile{subfiles/experience/content_writer/hackercontent}
+  \end{resume_list}
+
+  %-----------%
+  % Education %
+  %-----------%
+
+  \section{Education}
+
+  \headingBf{University of Northern Iowa}{} % Note: Adding year(s) exposes an implied age
+  \headingIt{Bachelor of Science in Computer Science (3.97 GPA)}{}
+
+  \vspace{5pt}
+  \headingBf{Certifications}{}
+  \begin{resume_list}
+    \item OSCP (OffSec Certified Professional)
+    \item OSCP+ (OffSec Certified Professional Plus)
+    \item CRTO (Certified Red Team Operator)
+  \end{resume_list}
+
+  %----------------------------%
+  % Extracurricular Activities %
+  %----------------------------%
+
+  \section{Projects}
+
+  \headingBf{Homelab}{Nov 2016 -- Present}
+  \begin{resume_list}
+    \item 20+ self-hosted services (Authentik, Bitwarden, Nextcloud, etc.)
+    \item Implemented passwordless SSO for all friends and family that use the services
+    \item Automated deployments and updates with Pulumi and Ansible
+    \item Ludus security lab for testing new tools, techniques, and configurations
+  \end{resume_list}
+
+  \headingBf{Open-Source Software}{Dec 2019 -- Present}
+  \begin{resume_list}
+    \item 1000+ stars on my GitHub repositories
+    \item Maintained and contributed to 50+ open-source projects
+  \end{resume_list}
+
+\end{document}

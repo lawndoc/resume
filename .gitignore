@@ -1,0 +1,20 @@
+# python virtual environment
+venv
+.venv
+
+# LaTeX generation artifacts
+content.yaml
+resume/resume.tex
+
+# LaTeX build artifacts
+\#*\#
+*~
+*.aux
+*.log
+*.out
+*.pyc
+.DEFLATEDDummyHeader
+
+# PDF release files
+release/
+*.pdf

@@ -1,0 +1,45 @@
+name: Generate PDFs
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - ".deps"
+      - "requirements.txt"
+      - "Dockerfile"
+      - "README.md"
+  workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        container: ghcr.io/lawndoc/gitpdf:main
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Build default resumes
+              run: |
+                make
+                mv release/CJ_May_Resume.pdf release/CJ_May_Resume_AppSec.pdf
+                make clean
+                cp resume/default_content.yaml content.yaml
+                sed -i 's/default_appsec/default_cybersec/g' content.yaml
+                make
+                mv release/CJ_May_Resume.pdf release/CJ_May_Resume_CyberSec.pdf
+
+            - name: Set release tag
+              id: tag
+              run: echo "TAG=$(date +'%Y-%m-%d')_$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+            
+            - name: Create release
+              uses: ncipollo/release-action@v1
+              with:
+                artifacts: "release/CJ_May_Resume_AppSec.pdf,release/CJ_May_Resume_CyberSec.pdf"
+                token: ${{ secrets.GITHUB_TOKEN }}
+                tag: ${{ steps.tag.outputs.TAG }}
+                name: "C.J. May's Resume"
+                body: "*Automatically generated PDFs from LaTeX source*\n\nI maintain a resume for both Product Security and Enterprise Cyber Security to group relevant experience."
+                draft: false
+                prerelease: false
