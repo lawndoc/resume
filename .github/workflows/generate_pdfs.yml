@@ -31,7 +31,9 @@ jobs:
 
             - name: Set release tag
               id: tag
-              run: echo "TAG=$(date +'%Y-%m-%d')_$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+              run: |
+                git config --global --add safe.directory /build
+                echo "TAG=$(date +'%Y-%m-%d')_$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
             
             - name: Create release
               uses: ncipollo/release-action@v1
