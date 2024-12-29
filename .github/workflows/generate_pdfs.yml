@@ -32,7 +32,7 @@ jobs:
             - name: Set release tag
               id: tag
               run: |
-                git config --global --add safe.directory /build
+                git config --global --add safe.directory $(pwd)
                 echo "TAG=$(date +'%Y-%m-%d')_$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
             
             - name: Create release
