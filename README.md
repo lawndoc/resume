@@ -9,10 +9,9 @@ The container image `ghcr.io/lawndoc/gitpdf` contains all the dependencies you n
 ### Building the PDF yourself
 
 ```bash
-docker run -it --rm -v release:/release ghcr.io/lawndoc/gitpdf:main bash
-git clone https://github.com/lawndoc/resume && cd resume
+git clone https://github.com/lawndoc/resume
+docker run -it --rm -v resume:/build ghcr.io/lawndoc/gitpdf:main bash
 make
-cp -R release /release
 ```
 
-You should now have my default resume (AppSec only) in the ./release folder that was mounted to the build container.
+You should now have my default resume (AppSec only) in the resume/release folder that was mounted inside the build container.
