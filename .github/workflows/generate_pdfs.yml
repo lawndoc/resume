@@ -22,12 +22,6 @@ jobs:
             - name: Build default resumes
               run: |
                 make
-                mv release/CJ_May_Resume.pdf release/CJ_May_Resume_AppSec.pdf
-                make clean
-                cp resume/default_content.yaml content.yaml
-                sed -i 's/default_appsec/default_cybersec/g' content.yaml
-                make
-                mv release/CJ_May_Resume.pdf release/CJ_May_Resume_CyberSec.pdf
 
             - name: Set release tag
               id: tag
@@ -38,10 +32,10 @@ jobs:
             - name: Create release
               uses: ncipollo/release-action@v1
               with:
-                artifacts: "release/CJ_May_Resume_AppSec.pdf,release/CJ_May_Resume_CyberSec.pdf"
+                artifacts: "release/CJ_May_Resume.pdf"
                 token: ${{ secrets.GITHUB_TOKEN }}
                 tag: ${{ steps.tag.outputs.TAG }}
                 name: "C.J. May's Resume"
-                body: "*Automatically generated PDFs from LaTeX source*\n\nI maintain a resume for both Product Security and Enterprise Cyber Security to group relevant experience."
+                body: "*Automatically generated PDFs from LaTeX source*"
                 draft: false
                 prerelease: false
