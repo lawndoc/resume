@@ -1,4 +1,6 @@
 ---
-summary_path: "default_summary"
+homelab_path: "default_homelab"
 skills_path: "default_skills"
-vermeer_path: "experience/vermeer/default_appsec"
+summary_path: "default_summary"
+thought_leadership_path: "default_thought_leadership"
+vermeer_path: "experience/vermeer/default_vermeer"

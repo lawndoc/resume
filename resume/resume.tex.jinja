@@ -1,7 +1,7 @@
 %%%%
-% MTecknology's Resume
+% C.J. May's Resume
 %%%%
-% Author: Michael Lustfield
+% Author: C.J. May
 % License: CC-BY-4
 % - https://creativecommons.org/licenses/by/4.0/legalcode.txt
 %%%%
@@ -49,11 +49,11 @@
   \tinysection{Summary}
   \subfile{subfiles/{{ summary_path | default("default_summary", true) }}}
 
-  %--------%
-  % Skills %
-  %--------%
+  %-----------------------%
+  % Skills and Technology %
+  %-----------------------%
 
-  \section{Skills}
+  \section{Skills \& Technology Stacks}
 
   \begin{multicols}{2}
     \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=75pt]
@@ -61,60 +61,40 @@
     \end{itemize}
   \end{multicols}
 
-  %------------%
-  % Experience %
-  %------------%
+  %-------------------------%
+  % Professional Experience %
+  %-------------------------%
 
-  \section{Experience}
+  \section{Professional Experience}
 
   \headingBf{Vermeer Corporation}{May 2018 -- Present}
-  \headingIt{Senior IT Security Analyst}{}
+  \headingIt{IT Cybersecurity Architect}{}
   \begin{resume_list}
-    \subfile{subfiles/{{ vermeer_path | default("experience/vermeer/default_appsec", true) }}}
+    \subfile{subfiles/{{ vermeer_path | default("experience/vermeer/default_combined", true) }}}
   \end{resume_list}
 
-  \headingBf{Freelance Work}{Oct 2021 -- Present}
-  \headingIt{Technical Content Writing}{}
+  %--------------------%
+  % Thought Leadership %
+  %--------------------%
+
+  \section{Architectural \& Thought Leadership}
+  
   \begin{resume_list}
-    \subfile{subfiles/experience/content_writer/gitguardian}
-    \subfile{subfiles/experience/content_writer/hackercontent}
+    \subfile{subfiles/{{ thought_leadership_path | default("experience/default_thought_leadership", true) }}}
   \end{resume_list}
 
-  %-----------%
-  % Education %
-  %-----------%
+  %------------------------%
+  % Education and Projects %
+  %------------------------%
 
-  \section{Education}
+  \section{Education \& Projects}
 
-  \headingBf{University of Northern Iowa}{} % Note: Adding year(s) exposes an implied age
+  \headingBf{University of Northern Iowa}{}  % Note: Adding year(s) exposes an implied age
   \headingIt{Bachelor of Science in Computer Science (3.97 GPA)}{}
 
-  % \vspace{5pt}
-  % \headingBf{Certifications}{}
-  % \begin{resume_list}
-  %   \item OSCP (OffSec Certified Professional)
-  %   \item OSCP+ (OffSec Certified Professional Plus)
-  %   \item CRTO (Certified Red Team Operator)
-  % \end{resume_list}
-
-  %----------------------------%
-  % Extracurricular Activities %
-  %----------------------------%
-
-  \section{Projects}
-
-  \headingBf{Homelab}{Nov 2016 -- Present}
+  \headingBf{Homelab \& Infrastructure}{}
   \begin{resume_list}
-    \item Managed over 20 self-hosted services (Authentik, Bitwarden, Nextcloud, etc.), ensuring high availability and security
-    \item Implemented passwordless SSO for all users, enhancing security and user experience for friends and family
-    \item Automated deployments and updates using GitHub Actions, Terraform, Ansible, and Docker Compose
-    \item Developed a Ludus-based security lab for testing new tools, techniques, and configurations
-  \end{resume_list}
-
-  \headingBf{Open-Source Software}{Dec 2019 -- Present}
-  \begin{resume_list}
-    \item Achieved over 1200 stars on personal GitHub repositories, demonstrating significant community impact and recognition
-    \item Maintained and contributed to over 50 open-source projects, driving innovation and collaboration
+    \subfile{subfiles/{{ homelab_path | default("experience/default_homelab", true) }}}
   \end{resume_list}
 
 \end{document}
