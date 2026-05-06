@@ -47,7 +47,7 @@
   %---------%
 
   \tinysection{Summary}
-  \subfile{subfiles/{{ summary_path | default("default_summary", true) }}}
+  \subfile{content/{{ summary_path | default("default_summary", true) }}}
 
   %-----------------------%
   % Skills and Technology %
@@ -57,44 +57,31 @@
 
   \begin{multicols}{2}
     \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=75pt]
-      \subfile{subfiles/{{ skills_path | default("default_skills", true) }}}
+      \subfile{content/{{ skills_path | default("default_skills", true) }}}
     \end{itemize}
   \end{multicols}
 
+  {% for section in sections %}
   %-------------------------%
-  % Professional Experience %
+  % {{ section.title }}
   %-------------------------%
 
-  \section{Professional Experience}
+  \section{ {{ section.title }} }
 
-  \headingBf{Vermeer Corporation}{May 2018 -- Present}
-  \headingIt{IT Cybersecurity Architect}{}
+  {% for item in section['items'] %}
+  {% if item.company %}
+  \headingBf{ {{ item.company }} }{ {{ item.date | default("", true) }} }
+  {% endif %}
+  {% if item.title %}
+  \headingIt{ {{ item.title }} }{}
+  {% endif %}
+  {% if item.path %}
   \begin{resume_list}
-    \subfile{subfiles/{{ vermeer_path | default("experience/vermeer/default_combined", true) }}}
+    \subfile{content/{{ item.path }}}
   \end{resume_list}
+  {% endif %}
 
-  %--------------------%
-  % Thought Leadership %
-  %--------------------%
-
-  \section{Architectural \& Thought Leadership}
-  
-  \begin{resume_list}
-    \subfile{subfiles/{{ thought_leadership_path | default("experience/default_thought_leadership", true) }}}
-  \end{resume_list}
-
-  %------------------------%
-  % Education and Projects %
-  %------------------------%
-
-  \section{Education \& Projects}
-
-  \headingBf{University of Northern Iowa}{}  % Note: Adding year(s) exposes an implied age
-  \headingIt{Bachelor of Science in Computer Science (3.97 GPA)}{}
-
-  \headingBf{Homelab \& Infrastructure}{}
-  \begin{resume_list}
-    \subfile{subfiles/{{ homelab_path | default("experience/default_homelab", true) }}}
-  \end{resume_list}
+  {% endfor %}
+  {% endfor %}
 
 \end{document}

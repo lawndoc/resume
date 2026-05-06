@@ -1,0 +1,22 @@
+---
+summary_path: "summary/cybersecurity"
+skills_path: "skills/cybersecurity"
+
+sections:
+  - title: "Professional Experience"
+    items:
+      - company: "Vermeer Corporation"
+        date: "May 2018 -- Present"
+        title: "IT Cybersecurity Architect"
+        path: "experience/vermeer_cybersecurity"
+  
+  - title: "Architectural \\& Thought Leadership"
+    items:
+      - path: "accomplishments/thought_leadership"
+
+  - title: "Education \\& Projects"
+    items:
+      - company: "University of Northern Iowa"
+        title: "Bachelor of Science in Computer Science (3.97 GPA)"
+      - company: "Homelab \\& Infrastructure"
+        path: "projects/homelab"
