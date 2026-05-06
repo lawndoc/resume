@@ -29,5 +29,7 @@ resume.pdf : resume/resume.tex
 resume/resume.tex : resume/resume.tex.jinja content.yaml
 	jinja2 resume/resume.tex.jinja content.yaml > resume/resume.tex
 
-content.yaml : resume/default_content.yaml
-	cp resume/default_content.yaml content.yaml
+RESUME_TYPE ?= cybersecurity
+
+content.yaml : resume/$(RESUME_TYPE)_content.yaml
+	cp resume/$(RESUME_TYPE)_content.yaml content.yaml

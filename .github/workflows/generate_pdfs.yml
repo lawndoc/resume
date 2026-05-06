@@ -21,7 +21,11 @@ jobs:
 
             - name: Build default resumes
               run: |
-                make
+                make --RESUME_TYPE=cybersecurity
+                mv release/CJ_May_Resume.pdf release/CJ_May_Cybersecurity_Resume.pdf
+                make clean
+                make --RESUME_TYPE=coaching
+                mv release/CJ_May_Resume.pdf release/CJ_May_Coaching_Resume.pdf
 
             - name: Set release tag
               id: tag
@@ -32,7 +36,7 @@ jobs:
             - name: Create release
               uses: ncipollo/release-action@v1
               with:
-                artifacts: "release/CJ_May_Resume.pdf"
+                artifacts: "release/CJ_May_Cybersecurity_Resume.pdf,release/CJ_May_Coaching_Resume.pdf"
                 token: ${{ secrets.GITHUB_TOKEN }}
                 tag: ${{ steps.tag.outputs.TAG }}
                 name: "C.J. May's Resume"
